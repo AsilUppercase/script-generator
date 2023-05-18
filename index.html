@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
+    <title>Script generator</title>
     <style>
         body {
             background-color: #191919;
@@ -15,10 +14,65 @@
             font-size: 32px;
             padding: 100px 40px;
         }
+        input {
+            padding: 20px;
+            width: 40vw;
+            margin: 200px auto 0;
+            outline: none;
+            font-size: 27px;
+        }
+        .result {
+            margin: 30px auto;
+            text-align: center;
+            color: greenyellow;
+            font-size: 18px;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
     </style>
-
 </head>
 <body>
-    Hello - 1
+    <div class="content-container">
+        <input type="text" placeholder="Enter loader URL..." autofocus /> 
+    </div>
+    <div class="result"></div>
 </body>
+
+<script>
+    function copyToClipboard(text) {
+        // Create a temporary textarea element
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+
+        // Make the textarea invisible
+        textarea.style.position = 'fixed';
+        textarea.style.top = '-9999px';
+
+        // Append the textarea to the DOM
+        document.body.appendChild(textarea);
+
+        // Select and copy the text
+        textarea.select();
+        document.execCommand('copy');
+
+        // Remove the textarea from the DOM
+        document.body.removeChild(textarea);
+    }
+
+    const form = document.querySelector('input')
+    form.addEventListener('keypress', function(event) {
+    if (event.key === 'Enter' || event.keyCode === 13) {
+        try {
+            let loaderUrl = form.value;
+            let part = 'loader-' + loaderUrl.split('loader-')[1].split('.min.js')[0] + '.min.js'
+            let output = '<script src="https://schemaplus-cdn.s3.amazonaws.com/' + part + '" async> <\/script>' 
+            copyToClipboard(output);
+            document.querySelector('.result').textContent = output
+            alert('Script copied. Now you can insert it to theme.liquid');
+        } catch(e) {
+            alert('There is something wrong. Please check your URL.')
+            form.value=''
+        } 
+    }
+    });
+</script>
 </html>

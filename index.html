@@ -67,7 +67,7 @@
             let output = '<script src="https://schemaplus-cdn.s3.amazonaws.com/' + part + '" async> <\/script>' 
             copyToClipboard(output);
             document.querySelector('.result').textContent = output
-            alert('Script copied. Now you can insert it to theme.liquid');
+            alert('Script copied. Now you can use it.');
         } catch(e) {
             alert('There is something wrong. Please check your URL.')
             form.value=''
